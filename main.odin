@@ -26,6 +26,7 @@ move_player :: proc(player: ^Player) {
 }
 main :: proc() {
     rl.InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "monster game")
+    player_spritesheet := rl.LoadTexture("assets/player.png")
 
     rl.SetTargetFPS(60)
     player := Player{rl.Vector2{50, 50}, 1.0, rl.RED}
@@ -34,11 +35,15 @@ main :: proc() {
         rl.BeginDrawing()
 
         rl.ClearBackground(rl.BLACK)
-        // print rectangle
-        rl.DrawRectangle(cast(i32)player.position.x, cast(i32)player.position.y, 100, 100, rl.RED)        
+        sourceRec := rl.Rectangle{0, 0, 16, 16} // Adjust the x and y to select different sprites
+        scale :f32 = 4.0 // Scale factor
+        destRec := rl.Rectangle{player.position.x, player.position.y, sourceRec.width * scale, sourceRec.height * scale}
+        origin := rl.Vector2{sourceRec.width * scale / 2, sourceRec.height * scale / 2}
 
+        // Draw the scaled sprite
+        rl.DrawTexturePro(player_spritesheet, sourceRec, destRec, origin, 0.0, rl.WHITE)
         rl.EndDrawing()
     }
-
+    rl.UnloadTexture(player_spritesheet)
     rl.CloseWindow()
 }
