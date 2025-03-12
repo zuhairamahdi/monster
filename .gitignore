@@ -1,0 +1,24 @@
+# Odin build artifacts
+*.obj
+*.exe
+*.dll
+*.lib
+*.pdb
+*.ilk
+*.o
+*.a
+*.so
+*.dylib
+
+# Odin temporary files
+*.tmp
+*.log
+
+# Odin cache files
+*.cache
+
+# Odin specific directories
+bin/
+build/
+
+monster
