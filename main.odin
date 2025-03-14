@@ -46,7 +46,7 @@ main :: proc() {
 
     rl.SetTargetFPS(60)
     player := Player{rl.Vector2{50, 50}, 1.0, rl.RED, .DOWN, false}
-    frameWidth : f32= 16.0
+    frameWidth : f32= 17.0
     frameHeight : f32= 16.0
     numFrames : i32= 3
     frameDuration :f32 = 0.15 // Duration of each frame in seconds
@@ -61,16 +61,29 @@ main :: proc() {
         if player.is_moving && f32(frameTime) >= frameDuration {
             frameTime = 0.0
             currentFrame = (currentFrame + 1) % numFrames
+            if player.direction == .RIGHT {
+                currentFrame = 3 + currentFrame
+            } 
+            if player.direction == .UP {
+                currentFrame = 6 + currentFrame
+            }
         } else if !player.is_moving {
             currentFrame = 0
+            if player.direction == .RIGHT {
+                currentFrame = 3
+            }
+            if player.direction == .UP {
+                currentFrame = 6
+            }
+
+
         }
         rl.ClearBackground(rl.BLACK)
         sourceRec := rl.Rectangle{f32(currentFrame) * f32(frameWidth), 0, f32(frameWidth), f32(frameHeight)}
-        fmt.printfln("current frame: %d", currentFrame)
         // Define the destination rectangle with scaling
         scale :f32= 4.0 // Scale factor
         destRec := rl.Rectangle{player.position.x, player.position.y, sourceRec.width * scale, sourceRec.height * scale}
-
+        
         // Define the origin point (usually the center of the sprite)
         origin := rl.Vector2{sourceRec.width * scale / 2, sourceRec.height * scale / 2}
 
