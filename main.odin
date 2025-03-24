@@ -44,57 +44,53 @@ move_player :: proc(player: ^Player) {
 main :: proc() {
     rl.InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "monster game")
     player_spritesheet := rl.LoadTexture("assets/player.png")
-    player_frames := [12]rl.Texture2D{
-        rl.LoadTexture("assets/player/player-gbc-full/down0.png"),
-        rl.LoadTexture("assets/player/player-gbc-full/down1.png"),
-        rl.LoadTexture("assets/player/player-gbc-full/down2.png"),
-        rl.LoadTexture("assets/player/player-gbc-full/right0.png"),
-        rl.LoadTexture("assets/player/player-gbc-full/right1.png"),
-        rl.LoadTexture("assets/player/player-gbc-full/right2.png"),
-        rl.LoadTexture("assets/player/player-gbc-full/up0.png"),
-        rl.LoadTexture("assets/player/player-gbc-full/up1.png"),
-        rl.LoadTexture("assets/player/player-gbc-full/up2.png"),
-        rl.LoadTexture("assets/player/player-gbc-full/left0.png"),
-        rl.LoadTexture("assets/player/player-gbc-full/left1.png"),
-        rl.LoadTexture("assets/player/player-gbc-full/left2.png"),
+    player_frames := []rl.Texture2D{
+        rl.LoadTexture("assets/player/main/down0.png"),
+        rl.LoadTexture("assets/player/main/down1.png"),
+        rl.LoadTexture("assets/player/main/right0.png"),
+        rl.LoadTexture("assets/player/main/right1.png"),
+        rl.LoadTexture("assets/player/main/up0.png"),
+        rl.LoadTexture("assets/player/main/up1.png"),
+        rl.LoadTexture("assets/player/main/left0.png"),
+        rl.LoadTexture("assets/player/main/left1.png"),
     }
     rl.SetTargetFPS(60)
     player := Player{rl.Vector2{50, 50}, 1.0, rl.RED, .DOWN, false}
-    frameWidth : f32= 17.0
-    frameHeight : f32= 17.0
-    numFrames : i32= 3
-    frameDuration :f32 = 0.15 // Duration of each frame in seconds
-    currentFrame : i32  = 0.0
-    frameTime :f32 = 0.0
+    frameWidth := 16
+    frameHeight := 16
+    numFrames := 2
+    frameDuration := 0.15 // Duration of each frame in seconds
+    currentFrame := 0
+    frameTime := 0.0
 
     for rl.WindowShouldClose() == false {
         move_player(&player)
         rl.BeginDrawing()
-        frameTime += rl.GetFrameTime()
+        frameTime += f64(rl.GetFrameTime())
 
-        if player.is_moving && f32(frameTime) >= frameDuration {
+        if player.is_moving && f32(frameTime) >= f32(frameDuration) {
             frameTime = 0.0
             currentFrame = (currentFrame + 1) % numFrames
             if player.direction == .RIGHT {
-                currentFrame = 3 + currentFrame
+                currentFrame = 2 + currentFrame
             } 
             if player.direction == .UP {
-                currentFrame = 6 + currentFrame
+                currentFrame = 4 + currentFrame
             }
             if player.direction == .LEFT {
-                currentFrame = 9 + currentFrame
+                currentFrame = 6 + currentFrame
             }
         
         } else if !player.is_moving {
             currentFrame = 0
             if player.direction == .RIGHT {
-                currentFrame = 3
+                currentFrame = 2
             }
             if player.direction == .UP {
-                currentFrame = 6
+                currentFrame = 4
             }
             if player.direction == .LEFT {
-                currentFrame = 9
+                currentFrame = 6
             }
 
 
