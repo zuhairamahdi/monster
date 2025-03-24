@@ -2,45 +2,12 @@ package main
 
 import "core:fmt"
 import rl "vendor:raylib"
+import p "player"
 
 
 SCREEN_WIDTH :: 800
 SCREEN_HEIGHT :: 450
-PlayerDirection :: enum {
-    RIGHT,
-    LEFT,
-    UP,
-    DOWN
-}
-Player :: struct {
-    position: rl.Vector2,
-    speed: f32,
-    color: rl.Color,
-    direction: PlayerDirection,
-    is_moving: bool
 
-}
-
-move_player :: proc(player: ^Player) {
-    player.is_moving = false
-    if rl.IsKeyDown(.RIGHT) {
-        player.position.x += player.speed
-        player.direction = .RIGHT
-        player.is_moving = true
-    }else if rl.IsKeyDown(.LEFT) {
-        player.position.x -= player.speed
-        player.direction = .LEFT
-        player.is_moving = true
-    } else if rl.IsKeyDown(.UP) {
-        player.position.y -= player.speed
-        player.direction = .UP
-        player.is_moving = true
-    }else if rl.IsKeyDown(.DOWN) {
-        player.position.y += player.speed
-        player.direction = .DOWN
-        player.is_moving = true
-    }
-}
 main :: proc() {
     rl.InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "monster game")
     player_spritesheet := rl.LoadTexture("assets/player.png")
@@ -55,7 +22,7 @@ main :: proc() {
         rl.LoadTexture("assets/player/main/left1.png"),
     }
     rl.SetTargetFPS(60)
-    player := Player{rl.Vector2{50, 50}, 1.0, rl.RED, .DOWN, false}
+    player := p.Player{rl.Vector2{50, 50}, 1.0, rl.RED, .DOWN, false}
     frameWidth := 16
     frameHeight := 16
     numFrames := 2
@@ -64,7 +31,7 @@ main :: proc() {
     frameTime := 0.0
 
     for rl.WindowShouldClose() == false {
-        move_player(&player)
+        p.move_player(&player)
         rl.BeginDrawing()
         frameTime += f64(rl.GetFrameTime())
 
